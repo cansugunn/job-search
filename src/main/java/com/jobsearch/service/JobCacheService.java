@@ -15,6 +15,7 @@ public abstract class JobCacheService {
   @Value("${job-search.cache.job-posting.ttl:600}")
   protected long cacheTtlSeconds;
 
+
   protected String toKey(@NotNull UUID id) {
     return JOB_CACHE_PREFIX + id;
   }
