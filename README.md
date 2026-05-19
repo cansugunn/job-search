@@ -8,14 +8,22 @@
 
 | Resource | URL |
 |---|---|
-| **Live Application** | `https://job-search-frontend-248843403405.europe-west1.run.app/` |
-| **API Gateway** | `https://job-search-gateway-248843403405.europe-west1.run.app` |
-| **Job Search Service (Swagger)** | `https://job-search-gateway-248843403405.europe-west1.run.app/job-search/swagger-ui.html` |
-| **Notification Service (Swagger)** | `https://job-search-gateway-248843403405.europe-west1.run.app/notification/swagger-ui.html` |
-| **AI Service (Swagger)** | `https://job-search-gateway-248843403405.europe-west1.run.app/ai/swagger-ui.html` |
+| **Live Application** | [Open App](https://job-search-frontend-248843403405.europe-west1.run.app/) |
+| **API Gateway** | [Open Gateway](https://job-search-gateway-248843403405.europe-west1.run.app) |
+| **Job Search Service (Swagger)** | [View Swagger](https://job-search-gateway-248843403405.europe-west1.run.app/job-search/swagger-ui.html) |
+| **Notification Service (Swagger)** | [View Swagger](https://job-search-gateway-248843403405.europe-west1.run.app/notification/swagger-ui.html) |
+| **AI Service (Swagger)** | [View Swagger](https://job-search-gateway-248843403405.europe-west1.run.app/ai/swagger-ui.html) |
 | **Demo Video** | [Watch on YouTube](https://youtu.be/TODO) |
 
-> Replace `XXXX` with actual Cloud Run revision hashes before submission.
+## Additional Repos
+
+| Repository | URL |
+|---|---|
+| **Frontend** | [job-search-frontend](https://github.com/cansugunn/job-search-frontend) |
+| **Job Search Service** | [job-search](https://github.com/cansugunn/job-search) |
+| **Notification Service** | [job-search-notification](https://github.com/cansugunn/job-search-notification) |
+| **AI Service** | [job-search-ai](https://github.com/cansugunn/job-search-ai) |
+| **Gateway Service** | [job-search-gateway](https://github.com/cansugunn/job-search-gateway) |
 
 ---
 
@@ -74,7 +82,7 @@
 - [x] Chat window on main screen (`/chat`)
 - [x] AI can **search jobs** on behalf of the user
 - [x] AI can **get job detail**
-- [x] AI can **apply to a job** (authenticated)
+- [x] AI can **apply to a job** 
 - [x] Inline "Apply" action cards rendered after AI response
 
 ### Non-Functional Requirements
