@@ -8,16 +8,14 @@ import com.jobsearch.data.entity.Country_;
 import com.jobsearch.data.entity.JobPosting;
 import com.jobsearch.data.entity.Town_;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.jpa.domain.Specification;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.data.jpa.domain.Specification;
 
 import static com.jobsearch.data.entity.City_.COUNTRY;
-import static com.jobsearch.data.entity.JobPosting_.ACTIVE;
-import static com.jobsearch.data.entity.JobPosting_.TITLE;
-import static com.jobsearch.data.entity.JobPosting_.TOWN;
-import static com.jobsearch.data.entity.JobPosting_.WORKING_PREFERENCE;
+import static com.jobsearch.data.entity.JobPosting_.*;
 import static com.jobsearch.data.entity.Town_.CITY;
 import static java.util.Objects.nonNull;
 import static org.springframework.util.StringUtils.hasText;
@@ -32,8 +30,10 @@ public class JobPostingSpecification {
 
       String position = request.position();
       if (hasText(position)) {
-        predicates.add(criteriaBuilder.like(
-            criteriaBuilder.lower(root.get(TITLE)), "%" + position.toLowerCase() + "%"));
+        String positionPattern = "%" + position.toLowerCase() + "%";
+        predicates.add(criteriaBuilder.or(
+                criteriaBuilder.like(criteriaBuilder.lower(root.get(TITLE)), positionPattern),
+                criteriaBuilder.like(criteriaBuilder.lower(root.get(DESCRIPTION)), positionPattern)));
       }
 
       UUID townId = request.townId();
@@ -44,7 +44,7 @@ public class JobPostingSpecification {
       String townName = request.townName();
       if (hasText(townName)) {
         predicates.add(criteriaBuilder.like(
-            criteriaBuilder.lower(root.get(TOWN).get(Town_.NAME)), "%" + townName.toLowerCase() + "%"));
+                criteriaBuilder.lower(root.get(TOWN).get(Town_.NAME)), "%" + townName.toLowerCase() + "%"));
       }
 
       UUID cityId = request.cityId();
@@ -55,7 +55,7 @@ public class JobPostingSpecification {
       String cityName = request.cityName();
       if (hasText(cityName)) {
         predicates.add(criteriaBuilder.like(
-            criteriaBuilder.lower(root.get(TOWN).get(CITY).get(City_.NAME)), "%" + cityName.toLowerCase() + "%"));
+                criteriaBuilder.lower(root.get(TOWN).get(CITY).get(City_.NAME)), "%" + cityName.toLowerCase() + "%"));
       }
 
       UUID countryId = request.countryId();
@@ -66,8 +66,8 @@ public class JobPostingSpecification {
       String countryName = request.countryName();
       if (hasText(countryName)) {
         predicates.add(criteriaBuilder.like(
-            criteriaBuilder.lower(root.get(TOWN).get(CITY).get(COUNTRY).get(Country_.NAME)),
-            "%" + countryName.toLowerCase() + "%"));
+                criteriaBuilder.lower(root.get(TOWN).get(CITY).get(COUNTRY).get(Country_.NAME)),
+                "%" + countryName.toLowerCase() + "%"));
       }
 
       WorkingPreference workingPreference = request.workingPreference();
@@ -85,13 +85,13 @@ public class JobPostingSpecification {
 
       if (nonNull(request.active())) {
         predicates.add(request.active()
-                           ? criteriaBuilder.isTrue(root.get(ACTIVE))
-                           : criteriaBuilder.isFalse(root.get(ACTIVE)));
+                ? criteriaBuilder.isTrue(root.get(ACTIVE))
+                : criteriaBuilder.isFalse(root.get(ACTIVE)));
       }
 
       if (hasText(request.title())) {
         predicates.add(criteriaBuilder.like(
-            criteriaBuilder.lower(root.get(TITLE)), "%" + request.title().toLowerCase() + "%"));
+                criteriaBuilder.lower(root.get(TITLE)), "%" + request.title().toLowerCase() + "%"));
       }
 
       if (nonNull(request.workingPreference())) {
@@ -110,10 +110,10 @@ public class JobPostingSpecification {
 
       if (hasText(cityName)) {
         predicates.add(
-            criteriaBuilder.like(
-                criteriaBuilder.lower(
-                    root.get(TOWN).get(CITY).get(City_.NAME)),
-                "%" + cityName.toLowerCase() + "%"));
+                criteriaBuilder.like(
+                        criteriaBuilder.lower(
+                                root.get(TOWN).get(CITY).get(City_.NAME)),
+                        "%" + cityName.toLowerCase() + "%"));
       }
 
       return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
