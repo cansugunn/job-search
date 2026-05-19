@@ -10,6 +10,9 @@ public record SearchJobsRequestDto(String position,
                                    UUID countryId,
                                    UUID cityId,
                                    UUID townId,
+                                   String countryName,
+                                   String cityName,
+                                   String townName,
                                    WorkingPreference workingPreference) {
 
   public boolean hasSearchCriteria() {
@@ -17,6 +20,9 @@ public record SearchJobsRequestDto(String position,
            || nonNull(countryId)
            || nonNull(cityId)
            || nonNull(townId)
+           || hasText(countryName)
+           || hasText(cityName)
+           || hasText(townName)
            || nonNull(workingPreference);
   }
 }

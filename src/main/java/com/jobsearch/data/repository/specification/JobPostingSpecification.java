@@ -41,14 +41,33 @@ public class JobPostingSpecification {
         predicates.add(criteriaBuilder.equal(root.get(TOWN).get(Town_.ID), townId));
       }
 
+      String townName = request.townName();
+      if (hasText(townName)) {
+        predicates.add(criteriaBuilder.like(
+            criteriaBuilder.lower(root.get(TOWN).get(Town_.NAME)), "%" + townName.toLowerCase() + "%"));
+      }
+
       UUID cityId = request.cityId();
       if (nonNull(cityId)) {
         predicates.add(criteriaBuilder.equal(root.get(TOWN).get(CITY).get(City_.ID), cityId));
       }
 
+      String cityName = request.cityName();
+      if (hasText(cityName)) {
+        predicates.add(criteriaBuilder.like(
+            criteriaBuilder.lower(root.get(TOWN).get(CITY).get(City_.NAME)), "%" + cityName.toLowerCase() + "%"));
+      }
+
       UUID countryId = request.countryId();
       if (nonNull(countryId)) {
         predicates.add(criteriaBuilder.equal(root.get(TOWN).get(CITY).get(COUNTRY).get(Country_.ID), countryId));
+      }
+
+      String countryName = request.countryName();
+      if (hasText(countryName)) {
+        predicates.add(criteriaBuilder.like(
+            criteriaBuilder.lower(root.get(TOWN).get(CITY).get(COUNTRY).get(Country_.NAME)),
+            "%" + countryName.toLowerCase() + "%"));
       }
 
       WorkingPreference workingPreference = request.workingPreference();
@@ -66,8 +85,8 @@ public class JobPostingSpecification {
 
       if (nonNull(request.active())) {
         predicates.add(request.active()
-            ? criteriaBuilder.isTrue(root.get(ACTIVE))
-            : criteriaBuilder.isFalse(root.get(ACTIVE)));
+                           ? criteriaBuilder.isTrue(root.get(ACTIVE))
+                           : criteriaBuilder.isFalse(root.get(ACTIVE)));
       }
 
       if (hasText(request.title())) {
