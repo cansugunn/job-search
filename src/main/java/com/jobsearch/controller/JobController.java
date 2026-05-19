@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static java.util.Objects.nonNull;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/jobs")
 @RequiredArgsConstructor
@@ -47,7 +49,11 @@ public class JobController {
          @ParameterObject @PageableDefault(size = 10) Pageable pageable,
          @AuthenticationPrincipal Jwt jwt) {
     if (nonNull(jwt)) {
-      searchHistoryService.saveSearch(jwt.getSubject(), request);
+      try {
+        searchHistoryService.saveSearch(jwt.getSubject(), request);
+      } catch (Exception e) {
+        log.warn("Search history save failed (non-fatal): {}", e.getMessage());
+      }
     }
     return ResponseEntity.ok(jobService.search(request, pageable));
   }
