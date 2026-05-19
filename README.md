@@ -27,8 +27,47 @@
 
 ---
 
+## Runtime Evidence Screenshots
+
+This project uses **Supabase Auth** as the IAM provider, **Redis** for cached job details and system tokens, **RabbitMQ** for new job addition events that are later drained by cron-based notification jobs, and **MongoDB** for job searches, job alerts, and notifications.
+
+### Supabase Auth IAM
+
+![Supabase Auth IAM](images/tools/supabase-auth-iam.png)
+
+### Redis Job Detail Cache
+
+![Redis cached job details](images/tools/redis-cache-job-details.png)
+
+### RabbitMQ New Job Addition Queue
+
+![RabbitMQ new job addition queue](images/tools/rabbitmq-new-job-addition-to-queue.png)
+
+### Cron Job Alert And Search Match Notifications
+
+![Cron job notification job alerts and job search matches](images/tools/cron-job-notification-job-alerts-and-job-searches-matches.png)
+
+### MongoDB Job Searches
+
+![MongoDB job searches](images/tools/mongo-job-searches.png)
+
+### MongoDB Job Alerts
+
+![MongoDB job alerts](images/tools/mongo-job-alerts.png)
+
+### MongoDB Notifications
+
+![MongoDB notifications](images/tools/mongo-job-notifications.png)
+
+### AI Job Search Chat
+
+![AI job search chat](images/tools/chat-ai-job-search.png)
+
+---
+
 ## Table of Contents
 
+0. [Runtime Evidence Screenshots](#runtime-evidence-screenshots)
 1. [Feature Checklist](#1-feature-checklist)
 2. [High Level Design (HLD)](#2-high-level-design-hld)
 3. [Microservices Overview](#3-microservices-overview)
