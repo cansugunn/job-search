@@ -8,11 +8,11 @@
 
 | Resource | URL |
 |---|---|
-| **Live Application** | `https://job-search-frontend-XXXX.run.app` |
-| **API Gateway** | `https://job-search-gateway-XXXX.run.app` |
-| **Job Search Service (Swagger)** | `https://job-search-XXXX.run.app/job-search/swagger-ui.html` |
-| **Notification Service (Swagger)** | `https://job-search-notification-XXXX.run.app/notification/swagger-ui.html` |
-| **AI Service (Swagger)** | `https://job-search-ai-XXXX.run.app/ai/swagger-ui.html` |
+| **Live Application** | `https://job-search-frontend-248843403405.europe-west1.run.app/` |
+| **API Gateway** | `https://job-search-gateway-248843403405.europe-west1.run.app` |
+| **Job Search Service (Swagger)** | `https://job-search-gateway-248843403405.europe-west1.run.app/job-search/swagger-ui.html` |
+| **Notification Service (Swagger)** | `https://job-search-gateway-248843403405.europe-west1.run.app/notification/swagger-ui.html` |
+| **AI Service (Swagger)** | `https://job-search-gateway-248843403405.europe-west1.run.app/ai/swagger-ui.html` |
 | **Demo Video** | [Watch on YouTube](https://youtu.be/TODO) |
 
 > Replace `XXXX` with actual Cloud Run revision hashes before submission.
