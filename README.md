@@ -6,14 +6,21 @@
 
 ## Quick Links
 
-| Resource | URL |
-|---|---|
-| **Live Application** | [Open App](https://job-search-frontend-248843403405.europe-west1.run.app/) |
-| **API Gateway** | [Open Gateway](https://job-search-gateway-248843403405.europe-west1.run.app) |
-| **Job Search Service (Swagger)** | [View Swagger](https://job-search-gateway-248843403405.europe-west1.run.app/job-search/swagger-ui.html) |
+| Resource | URL                                                                                                       |
+|---|-----------------------------------------------------------------------------------------------------------|
+| **Live Application** | [Open App](https://job-search-frontend-248843403405.europe-west1.run.app/)                                |
+| **API Gateway** | [Open Gateway](https://job-search-gateway-248843403405.europe-west1.run.app)                              |
+| **Job Search Service (Swagger)** | [View Swagger](https://job-search-gateway-248843403405.europe-west1.run.app/job-search/swagger-ui.html)   |
 | **Notification Service (Swagger)** | [View Swagger](https://job-search-gateway-248843403405.europe-west1.run.app/notification/swagger-ui.html) |
-| **AI Service (Swagger)** | [View Swagger](https://job-search-gateway-248843403405.europe-west1.run.app/ai/swagger-ui.html) |
-| **Demo Video** | [Watch on YouTube](https://youtu.be/TODO) |
+| **AI Service (Swagger)** | [View Swagger](https://job-search-gateway-248843403405.europe-west1.run.app/ai/swagger-ui.html)           |
+| **Video** | [Watch on Google Drive](https://drive.google.com/file/d/1MDT4UQF48yRYT1EwWrqwWXQFsozij6ww/view?usp=sharing)                                                            |
+
+## Note
+
+> [!WARNING]
+> Applications running on the Google Cloud free tier may scale down when there is no active traffic.  
+> Because of this, the first request to real-time features such as AI Chat, Notifications, or other independent services may experience an initial delay ("cold start").  
+> After the service becomes active, subsequent requests will respond normally with lower latency.
 
 ## Additional Repos
 
