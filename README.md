@@ -957,13 +957,26 @@ graph LR
 
 All services are Docker containers deployed individually to **Google Cloud Run**.
 
-### Spring Boot services
+### Spring Boot services (some are 17 and ai project is jdk 25)
 
 ```dockerfile
-FROM eclipse-temurin:21-jre
+FROM maven:3.9.9-eclipse-temurin-17-alpine AS build
+
 WORKDIR /app
-COPY target/*.jar app.jar
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre-alpine
+
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
 ```
 
@@ -1046,6 +1059,9 @@ Nginx proxies `/job-search/**`, `/notification/**`, `/ai/**` to the Gateway Clou
 | 8 | **`userId` in `APPLICATIONS` is raw Supabase UUID string.** | No separate users table needed — identity is fully managed by Supabase. |
 | 9 | **Related jobs matched by first word of title + same city.** | Simple keyword match provides useful recommendations without a full-text search engine. Upgradable to Elasticsearch. |
 | 10 | **AI real-time streaming NOT implemented.** | The spec explicitly states: *"For AI Agent, real time messaging IS NOT required."* |
+| 11 | **CV upload, profile management, and similar account-management features were intentionally omitted.** | These features were not included in the assignment requirements; therefore, the implementation strictly follows the provided scope. |
+| 12 | **No company-based role hierarchies, management types, or organization-specific authorization constraints implemented.** | The assignment requirements did not specify multi-tenant company management structures or differentiated company roles/permissions. The implementation follows the requirements exactly as written. |
+| 13 | **“My Applications” screen/feature not implemented.** | The assignment requirements did not provide specifications or acceptance criteria for a dedicated “Applied Jobs / My Applications” screen. Requirement scope was followed accordingly. |
 
 ---
 
@@ -1053,58 +1069,9 @@ Nginx proxies `/job-search/**`, `/notification/**`, `/ai/**` to the Gateway Clou
 
 | Issue | Root Cause | Solution |
 |---|---|---|
-| **Redis `missing type id property '@class'`** | `RedisTemplate<String, Object>` with `activateDefaultTyping` expects `@class` in every cached JSON. Test/seed data lacked it. | Switched to `RedisTemplate<String, JobDetailResponseDto>` with `Jackson2JsonRedisSerializer<JobDetailResponseDto>`. Also made `find()` and `save()` soft-fail so stale keys never break requests. |
-| **CORS errors from Swagger UI** | `.cors(AbstractHttpConfigurer::disable)` stripped all CORS headers. | Replaced with `.cors(c -> c.configurationSource(corsConfigurationSource()))` and a `CorsConfigurationSource` bean allowing all origins/methods/headers. |
-| **RabbitMQ 500 — `failed to resolve class name`** | AMQP message header embeds publisher's FQCN; consumer's local class is at a different package. | `DefaultJackson2JavaTypeMapper.setIdClassMapping()` in `RabbitConfig` maps publisher FQCN → local class. |
-| **Pagination with `Integer.MAX_VALUE`** | Initial cron fetched all data in a single page of size `MAX_VALUE`, causing memory pressure. | `fetchAllPages()` / `fetchAllSearchPages()` helpers loop with `size=50`, stopping when `PageResponse.last() == true`. |
 | **Static admin token as env variable** | Long-lived credential with no expiry stored in an environment variable. | `SystemTokenService` acquires short-lived Supabase JWT (TTL ≈ 3500 s), cached in Redis with distributed lock preventing thundering herd. |
-| **Cloud Run cold-start latency** | JVM startup + Spring context initialization on first request. | Gateway configured with min-instances=1. Backend services warm within 2–3 s. |
-| **RabbitMQ connection dropped on scale-down** | Cloud Run terminates the container; AMQP keep-alives fail before reconnect. | Drain-on-demand: connection opened and closed per cron invocation, no persistent listener. |
 | **Duplicate notifications on parallel cron** | Two Cloud Run instances could fire on the same cron tick. | `existsByUserIdAndJobId()` dedup check before every notification insert. |
-
----
-
-## 16. Local Development
-
-### Prerequisites
-
-- Docker Desktop
-- Java 21
-- Node.js 22
-- Maven 3.9+
-
-### Start infrastructure
-
-```bash
-# from job-search/
-docker-compose up -d
-# Starts: PostgreSQL, MongoDB, Redis, RabbitMQ
-```
-
-### Run services
-
-```bash
-# Terminal 1 — Core service
-cd job-search && mvn spring-boot:run
-
-# Terminal 2 — Notification service
-cd job-search-notification && mvn spring-boot:run
-
-# Terminal 3 — AI service
-cd job-search-ai && mvn spring-boot:run
-
-# Terminal 4 — Gateway
-cd job-search-gateway && mvn spring-boot:run
-
-# Terminal 5 — Frontend
-cd job-search-frontend && npm install && npm run dev
-```
-
-Open `http://localhost:5173` — Vite dev server proxies API calls to the gateway at `http://localhost:9000`.
-
-### Environment Variables
-
-Copy `.env.example` to `.env` in each service directory and fill in the required values. See [§13 — Deployment](#13-deployment) for the full variable list.
+| **Pagination with `Integer.MAX_VALUE`** | Initial cron fetched all data in a single page of size `MAX_VALUE`, causing memory pressure. | `fetchAllPages()` / `fetchAllSearchPages()` helpers loop with `size=50`, stopping when `PageResponse.last() == true`. |
 
 ---
 
