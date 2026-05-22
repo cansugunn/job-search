@@ -90,7 +90,6 @@ This project uses **Supabase Auth** as the IAM provider, **Redis** for cached jo
 13. [Deployment](#13-deployment)
 14. [Design Assumptions](#14-design-assumptions)
 15. [Issues Encountered & Solutions](#15-issues-encountered--solutions)
-16. [Local Development](#16-local-development)
 
 ---
 
