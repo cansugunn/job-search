@@ -154,8 +154,10 @@ public class JobServiceImpl implements JobService {
   @Override
   @Transactional
   public ApplyResponseDto apply(UUID jobId, String userId) {
-    if (applicationRepository.existsByJobPostingIdAndUserId(jobId, userId)) {
-      throw new BusinessException("You have already applied to this job");
+    Optional<Application> existingApplication =
+        applicationRepository.findByJobPostingIdAndUserId(jobId, userId);
+    if (existingApplication.isPresent()) {
+      return jobMapper.toApplyResponseDto(existingApplication.get());
     }
 
     JobPosting jobPosting = jobPostingRepository.findById(jobId)
